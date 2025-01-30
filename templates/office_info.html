@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="office-details-container">
+    <h2>{{ office.name }}</h2>
+    <div class="office-info">
+        <p><strong>Location:</strong> {{ office.location }}</p>
+        <p><strong>Address:</strong> {{ office.address }}</p>
+        <p><strong>Phone:</strong> {{ office.phone_no }}</p>
+    </div>
+    <a href="{{ url_for('show_office_cars', office_id=office.id) }}" class="button">Show Cars</a>
+</div>
+{% endblock %}

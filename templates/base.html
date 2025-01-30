@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="{{ language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaybe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/scripts.js') }}" defer></script>
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <h1><a href="{{ url_for('home') }}">Jaybe - {{ translations['welcome'] }}</a></h1>
+            <div class="nav-right">
+                <div class="language-switch">
+                    <a href="{{ url_for('set_language_route', lang='en') }}">EN</a> |
+                    <a href="{{ url_for('set_language_route', lang='tr') }}">TR</a>
+                </div>
+                {% if is_authenticated(session) %}
+                    <a href="{{ url_for('logout') }}">{{ translations['logout'] }}</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">{{ translations['login'] }}</a>
+                    <a href="{{ url_for('register') }}">{{ translations['register'] }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="car-detail-container">
+  <h2 class="car-title">{{ car.name }}</h2>
+  <div class="car-image-container">
+    <img src="{{ url_for('static', filename=car.image) }}" alt="{{ car.name }}" class="car-detail-image">
+  </div>
+  <div class="car-details">
+    <p><strong>{{ translations['transmission'] }}:</strong> {{ car.transmission }}</p>
+    <p><strong>{{ translations['cost'] }}:</strong> {{ car.cost }}</p>
+    <p><strong>{{ translations['deposit'] }}:</strong> {{ car.deposit }}</p>
+    <p><strong>{{ translations['mileage'] }}:</strong> {{ car.mileage }}</p>
+    <p><strong>{{ translations['age'] }}:</strong> {{ car.age }}</p>
+    <p><strong>{{ translations['rental_cost'] }}:</strong> {{ car.rental_cost }}</p>
+  </div>
+  <a href="{{ url_for('home') }}" class="back-button">{{ translations['back_to_home'] }}</a>
+</div>
+{% endblock %}

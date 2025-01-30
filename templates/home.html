@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="home-page-container">
+    <!-- Search form for the home page (spanning horizontally) -->
+    <div class="header-bottom">
+        <form action="{{ url_for('search') }}" method="get" class="search-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pickup-office">{{ translations['pickup_office'] }}</label>
+                    <select name="pickup_office" id="pickup-office" required>
+                        <option value="">{{ translations['select_pickup_office'] }}</option>
+                        {% for office in offices %}
+                            <option value="{{ office.id }}">{{ office.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pickup-date">{{ translations['pickup_date'] }}</label>
+                    <input type="date" name="pickup_date" id="pickup-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="pickup-time">{{ translations['pickup_time'] }}</label>
+                    <input type="time" name="pickup_time" id="pickup-time" required>
+                </div>
+                <div class="form-group">
+                    <label for="return-office">{{ translations['return_office'] }}</label>
+                    <select name="return_office" id="return-office" required>
+                        <option value="">{{ translations['select_return_office'] }}</option>
+                        {% for office in offices %}
+                            <option value="{{ office.id }}">{{ office.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="return-date">{{ translations['return_date'] }}</label>
+                    <input type="date" name="return_date" id="return-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="return-time">{{ translations['return_time'] }}</label>
+                    <input type="time" name="return_time" id="return-time" required>
+                </div>
+            </div>
+            <button type="submit" class="rent-button">{{ translations['rent_for_days'] }}</button>
+        </form>
+    </div>
+
+    <!-- Office Info and Map Section (Split in half) -->
+    <div class="office-map-container">
+        <div class="office-info-section">
+            <h3>{{ translations['office_information'] }}</h3>
+            <ul>
+                {% for office in offices %}
+                    <li>
+                        <strong>{{ office.name }}</strong><br>
+                        {{ office.location }}<br>
+                        {{ office.address }}<br>
+                        Phone: {{ office.phone_no }}<br>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="map-section">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initMap() {
+        const locations = JSON.parse('{{ locations | tojson | safe }}');
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 11,
+            center: { lat: 39.92077, lng: 32.85411 }, // Default: Ankara
+        });
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    map.setCenter(userLocation);
+                },
+                function () {
+                    console.log("Geolocation failed or user denied permission.");
+                }
+            );
+        } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+
+        locations.forEach(location => {
+            const marker = new google.maps.Marker({
+                position: { lat: location.lat, lng: location.lng },
+                map: map,
+                title: location.name,
+            });
+
+            marker.addListener('click', () => {
+                window.location.href = `/office/${location.id}`;
+            });
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjNCj9Ll2S9uGHvu-uOPdNXYelOpvet7w&callback=initMap" async defer></script>
+{% endblock %}
+
