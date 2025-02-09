@@ -48,7 +48,7 @@ Open http://localhost:5000 in your browser to test the application.
 ├── requirements.txt     
 └── README.md        
 
-Application link: https://berinturker1.pythonanywhere.com
+Application link: https://berinturker3.pythonanywhere.com
 Explaination video: video link: 
 https://drive.google.com/file/d/1m7fh0qjCBfCXKMNzBT0xFypQ7za_l0nN/view?usp=sharing
 
